@@ -1,1 +1,137 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>حاسبة عمر مع قاعدة بيانات 🗄️</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(30, 41, 59, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            width: 380px;
+            text-align: center;
+        }
+        h2 { margin: 0 0 20px; color: #38bdf8; }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #f8fafc;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+        }
+        input:focus, select:focus { border-color: #38bdf8; }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, #38bdf8, #3b82f6);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover { opacity: 0.9; transform: translateY(-2px); }
+        .result-box {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid #38bdf8;
+            border-radius: 10px;
+            color: #38bdf8;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .history-section {
+            margin-top: 25px;
+            text-align: right;
+            border-top: 1px solid #334155;
+            padding-top: 15px;
+        }
+        .history-title {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 10px;
+        }
+        .history-item {
+            background: #0f172a;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            border-right: 3px solid #38bdf8;
+        }
+        .time { font-size: 10px; color: #64748b; }
+    </style>
+</head>
+<body>
 
+    <div class="container">
+        <h2>حاسبة ذكية بـ SQLite 🗄️</h2>
+
+        <form action="/" method="POST">
+            <div class="input-group">
+                <input type="number" step="any" name="num1" placeholder="الرقم الأول" required>
+                <input type="number" step="any" name="num2" placeholder="الرقم الثاني" required>
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <select name="operation">
+                    <option value="add">جمع (+)</option>
+                    <option value="multiply">ضرب (×)</option>
+                    <option value="power">أس (Power ^)</option>
+                </select>
+            </div>
+
+            <button type="submit">حسب وحفظ في قاعدة البيانات 💾</button>
+        </form>
+
+        {% if result is not none %}
+            <div class="result-box">
+                النتيجة: {{ result }}
+            </div>
+        {% endif %}
+
+        {% if history %}
+            <div class="history-section">
+                <div class="history-title">📜 أحدث العمليات المحفوظة في الداتابيز:</div>
+                {% for item in history %}
+                    <div class="history-item">
+                        <span>{{ item[0] }} = <strong>{{ item[1] }}</strong></span>
+                        <span class="time">{{ item[2].split(' ')[1] }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>
